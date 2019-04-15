@@ -346,6 +346,23 @@ iframe {
   color: #827ffe;
 }
 
+/*------------------------------------------------------------------
+[ Loading Gif ]*/
+.loadingGif-visible {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+  height: auto;
+}
+.loadingGif-hidden {
+  display: none;
+}
+
 
 /*------------------------------------------------------------------
 [ Button ]*/

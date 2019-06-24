@@ -44,4 +44,10 @@ blackfynnManger.initialiseBlackfynnPanel()
 blacfynnManager.login()
 blackfynnManager.insert('Sample Time Series (EEG)','EEG C3-REF')
 
+// serialise to JSON and load from JSON
+var blackfynnManager = new blackfynn_panel.BlackfynnManager()
+serialisedPanel = blackfynnManager.exportState()
+console.log(serialisedPanel)
+// "{"parentDiv":{},"selectedChannels":[],"csvURL":""}"
+blackfynnManager.loadState(serialisedPanel)
 ```

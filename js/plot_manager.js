@@ -100,14 +100,17 @@ function PlotManager(parentDiv) {
     console.log('in slider adjusted')
     var slider = document.getElementById("slider")
     var chart = document.getElementById('chart_div')
-    var adjustedX = []
+    var adjusted = {}
     for (i in chart.data)
-      adjustedX = []
+      adjusted = {x:[], y:[],name:''}
       if (chart.data[i].visible === true) {
         for (j in chart.data[i].x){
-          adjustedX.push(chart.data[i].x[j] + Number(slider.value)/1000)
+          adjusted.x.push(chart.data[i].x[j] + Number(slider.value)/1000)
         }
-        Plotly.update(chart, {x: [adjustedX]}, i)
+        adjusted.y = chart.data[i].y
+        adjusted.name = chart.data[i].name
+        Plotly.deleteTraces(chart, Number(i))
+        Plotly.addTraces(chart, processData(adjusted.y, adjusted.x, adjusted.name))
       }
     slider.value = 0
   }

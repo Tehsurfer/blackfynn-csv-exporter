@@ -5,8 +5,10 @@ function PlotManager(parentDiv) {
   var chartDiv = parentDiv.querySelector('#chart_div')
   var self = this
   self.plot = undefined
+  
 
   this.createChart = function (createChartData, samplesPerSecond, id) {
+    document.getElementById("slider").onchange = sliderAdjusted
     if (self.plot !== undefined) {
       Plotly.purge(chartDiv)
     }
@@ -68,6 +70,7 @@ function PlotManager(parentDiv) {
       type: 'scatter',
       name: id,
       mode: 'lines',
+      visible: true,
       x: times,
       y: unprocessedData,
       line: {
@@ -91,6 +94,22 @@ function PlotManager(parentDiv) {
         height: resizeObject.innerHeight - 150
       })
     })
+  }
+
+  var sliderAdjusted = function(){
+    console.log('in slider adjusted')
+    var slider = document.getElementById("slider")
+    var chart = document.getElementById('chart_div')
+    var adjustedX = []
+    for (i in chart.data)
+      adjustedX = []
+      if (chart.data[i].visible === true) {
+        for (j in chart.data[i].x){
+          adjustedX.push(chart.data[i].x[j] + Number(slider.value)/1000)
+        }
+        Plotly.update(chart, {x: [adjustedX]}, i)
+      }
+    slider.value = 0
   }
 }
 

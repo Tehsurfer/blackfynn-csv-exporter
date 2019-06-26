@@ -136,7 +136,7 @@ function BlackfynnManager() {
   this.updateSize = function(){
     var blackfynn_panel = document.getElementById('blackfynn-panel')
     var dataset_div = document.getElementById('dataset_div')
-    var chart_height = blackfynn_panel.clientHeight - dataset_div.offsetHeight
+    var chart_height = blackfynn_panel.clientHeight - dataset_div.offsetHeight - 70
 
     plot.resizePlot(blackfynn_panel.clientWidth, chart_height)
   }

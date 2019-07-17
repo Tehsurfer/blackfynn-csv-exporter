@@ -27,12 +27,6 @@ function PlotManager(parentDiv) {
     }
   }
 
-  this.clearChart = function () {
-    if (_this.plot !== undefined) {
-      Plotly.purge(chartDiv)
-    }
-  }
-
   this.addDataSeriesToChart = function (newSeries, xaxis, id) {
  
     xaxis.shift() // Remove the header

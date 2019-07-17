@@ -83,7 +83,7 @@ function BlackfynnManager(targetDiv) {
 
   this.openCSV = function(url){
     return new Promise(function(resolve, reject){
-      csv.loadFile(url, ()=>{
+      csv.loadFile(url).then( _ =>{
         _this.setDataType(csv.getDataType())
         ui.showSelector()
         var headers = [...csv.getHeaders()]
@@ -106,7 +106,7 @@ function BlackfynnManager(targetDiv) {
 
   var openCSVfromState = function(url){
     return new Promise(function(resolve, reject){
-      csv.loadFile(url, ()=>{
+      csv.loadFile(url).then( _ =>{
         _this.setDataType(csv.getDataType())
         ui.showSelector()
         var headers = [...csv.getHeaders()]
@@ -182,7 +182,7 @@ function BlackfynnManager(targetDiv) {
 
   this.loadState = function(jsonString){
     return new Promise(function(resolve, reject){
-      plot.clearChart()
+      _this.clearChart()
       state.loadFromJSON(jsonString)
       openCSVfromState(state.csvURL).then( _ => {
         plot.plotType = state.plotType

@@ -6,11 +6,13 @@ function CsvManager() {
   _this = this
   _this.csv_data = undefined
 
-  this.loadFile = function (file_url, callback) {
-    $.get(file_url).then((response) => {
-      _this.csv_data = Papa.parse(response)
-      callback()
-    });
+  this.loadFile = function (file_url) {
+    return new Promise(function(resolve, reject){
+      $.get(file_url).then((response) => {
+        _this.csv_data = Papa.parse(response)
+        resolve()
+      });
+    })
   }
 
   this.getDataType = function () {

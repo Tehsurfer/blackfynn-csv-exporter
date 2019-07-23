@@ -67,8 +67,8 @@ function CsvManager() {
     headerList.push(_this.getHeaderByIndex(0))
     selectedData.push(_this.getColoumnByIndex(0))
     for (let i in state.selectedChannels){
-      headerList.push(state.selectedChannels[i])
-      selectedData.push(_this.getColoumnByName(state.selectedChannels[i]))
+      headerList.push(_this.getHeaderByIndex(state.selectedChannels[i]+1))
+      selectedData.push(_this.getColoumnByIndex(state.selectedChannels[i]+1))
     }
     filename = 'sparc-export-' + Math.random().toString(36).slice(-5)  + '.csv'
     downloadCSV({
@@ -85,8 +85,8 @@ function CsvManager() {
     headerList.push(_this.getHeaderByIndex(0))
     selectedData.push(_this.getColoumnByIndex(0))
     for (let i in state.selectedChannels){
-      headerList.push(state.selectedChannels[i])
-      selectedData.push(_this.getColoumnByName(state.selectedChannels[i]))
+      headerList.push(_this.getHeaderByIndex(state.selectedChannels[i]+1))
+      selectedData.push(_this.getColoumnByIndex(state.selectedChannels[i]+1))
     }
     data = transpose(selectedData)
     data[0] = convertHeadersToOpencor(data[0])

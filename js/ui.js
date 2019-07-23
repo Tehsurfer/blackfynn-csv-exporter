@@ -87,6 +87,7 @@ function UI (parentDiv) {
     }
     if (_this.choice === undefined){
       _this.choice = new Choices(select)
+      window.choice = _this.choice
     }
   }
 

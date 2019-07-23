@@ -3,8 +3,8 @@ const Plotly = require('plotly.js/dist/plotly-basic.min.js')
 
 function PlotManager(parentDiv) {
   var chartDiv = parentDiv.querySelector('#chart_div')
-  var indexList = []
   var _this = this
+  _this.indexList = []
   _this.plot = undefined
   _this.subplots = false
   _this.plotType = 'scatter'
@@ -52,10 +52,11 @@ function PlotManager(parentDiv) {
   }
 
   this.removeSeries = function(index){
-    traceNumber = Number(indexList.indexOf(index))
+    traceNumber = Number(_this.indexList.indexOf(index))
     Plotly.deleteTraces(chartDiv, traceNumber)
-    indexList.slice(traceNumber, traceNumber+1)
+    _this.indexList.slice(traceNumber, traceNumber+1)
   }
+
 
   var getLayout = function(){
     var layout

@@ -60,20 +60,21 @@ function BlackfynnManager(targetDiv) {
   }
 
   var csvChannelCall = function(){
-    var selectedChannel = $('#select_channel :selected').text()
-    plot.addDataSeriesToChart(csv.getColoumnByName(selectedChannel),csv.getColoumnByIndex(0), selectedChannel)
-    state.selectedChannels.push(selectedChannel)
+    var selectedIndex = ui.choice.getValue().choiceId
+    var selectedChannel = csv.getHeaderByIndex(selectedIndex)
+    plot.addDataSeriesToChart(csv.getColoumnByIndex(selectedIndex),csv.getColoumnByIndex(0), selectedChannel)
+    state.selectedChannels.push(selectedIndex-1)
     bc.postMessage({'state': _this.exportStateAsString()})
   }
 
   var checkBoxCall = function(channel, index, flag){
     if (!flag) {
       plot.addDataSeriesFromDatGui(csv.getColoumnByIndex(index), csv.getColoumnByIndex(0), channel, index)
-      state.selectedChannels.push(channel)
+      state.selectedChannels.push(index)
     }
     else {
       plot.removeSeries(index)
-      ch_ind = state.selectedChannels.indexOf(channel)
+      ch_ind = state.selectedChannels.indexOf(index)
       state.selectedChannels.splice( ch_ind, ch_ind + 1)
     }
     bc.postMessage({'state': _this.exportStateAsString()})
@@ -169,11 +170,17 @@ function BlackfynnManager(targetDiv) {
 
   this.hideAll = function(){
     _this.clearChart()
-    _this.plotByIndex(1)
     if (csv.getHeaders().length > 100){
       ui.showSelector()
+      _this.plotByIndex(1)
     } else {
-      ui.checkboxElements[0].__checkbox.checked = true
+      if (csv.getHeaders().length < 100) {
+        ui.checkboxElements[0].__checkbox.click()
+        for (let i in ui.checkboxElements){
+          ui.checkboxElements[i].__checkbox.checked = false
+        }
+        plot.indexList = []
+      }
     }
     setTimeout( _this.updateSize, 1000)     
     state.plotAll = false
@@ -193,7 +200,7 @@ function BlackfynnManager(targetDiv) {
   this.plotByIndex = function(index){
     var channelName = csv.getHeaderByIndex(index)
     plot.addDataSeriesToChart(csv.getColoumnByIndex(index), csv.getColoumnByIndex(0), channelName)
-    state.selectedChannels.push(channelName)
+    state.selectedChannels.push(index)
   }
 
   this.plotByNamePromise = function(channelName){
@@ -203,9 +210,18 @@ function BlackfynnManager(targetDiv) {
     })
   }
 
+  this.plotByIndexPromise = function(index){
+    return new Promise(function(resolve, reject) {
+      var channelName = csv.getHeaderByIndex(index)
+      plot.addDataSeriesToChart(csv.getColoumnByIndex(index), csv.getColoumnByIndex(0), channelName)
+      resolve()
+    })
+  }
+
   this.plotByName = function(channelName){
     plot.addDataSeriesToChart(csv.getColoumnByName(channelName), csv.getColoumnByIndex(0), channelName)
-    state.selectedChannels.push(channelName)
+    var index = csv.getHeaders().indexOf(channelName)
+    state.selectedChannels.push(index-1)
   }
 
   this.clearChart = function(){
@@ -249,20 +265,20 @@ function BlackfynnManager(targetDiv) {
   }
 
   var plotStateChannels = function(channels){
-    _this.plotByNamePromise(channels[0]).then(_ => {
+    _this.plotByIndexPromise(channels[0]+1).then(_ => {
       for (let i = 0; i <channels.length; i++){
         if (i === 0){
+          plot.indexList.push(channels[i])
           continue
         }
-        _this.plotByNamePromise(channels[i])
+        ui.checkboxElements[channels[i]].__checkbox.click()
+        plot.indexList.push(channels[i])
       }
     })
-    for (let i in channels){
-      for (let j in ui.checkboxElements){
-        if (ui.checkboxElements[j].property === channels[i]){
-          ui.checkboxElements[j].__checkbox.checked = true
-          break
-        }
+    if (csv.getHeaders().length < 100) {
+      for (let i in channels){
+        ui.checkboxElements[channels[i]].__checkbox.click()
+        plot.indexList.push(channels[i])
       }
     }
   }

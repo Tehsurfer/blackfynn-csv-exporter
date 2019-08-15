@@ -98,8 +98,10 @@ function UI (parentDiv) {
   }
 
    var setChecked = function( prop ) {
-    for (let param in simGui){
-      simGui[param] = false;
+    for (let param of ['Stellate stimulation', 'Vagal stimulation']){
+      if (param != prop) {
+        simGui[param] = false;
+      }
     }
     simGui[prop] = true;
   }
@@ -112,15 +114,12 @@ function UI (parentDiv) {
     _this.showDatGui()
     gui.add(simGui, 'Stimulation level', 0, 100)
     gui.add(simGui, 'Stellate stimulation').listen().onChange(() => {setChecked('Stellate stimulation')});
-    gui.add(simGui, 'Vagal stimulation').listen().onChange(function(){setChecked('Vagal stimulation')});
+    gui.add(simGui, 'Vagal stimulation').listen().onChange(() => {setChecked('Vagal stimulation')});
     gui.add(simGui, 'Run Simulation')
   }
 
   var simRun = function() {
     let study_id = '194bb264-a717-11e9-9dff-02420aff2767'
-//    let heartDiv = document.createElement('Div')
-//    parentDiv.querySelector("#heart_rate").style.visibility = 'visible'
-
     let stimulation_mode = 1
     if (simGui['Stellate stimulation']) {
       stimulation_mode = 1

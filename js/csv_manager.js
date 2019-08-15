@@ -3,12 +3,12 @@ var Papa = require('papaparse')
 
 function CsvManager() {
 
-  _this = this
+  var _this = this
   _this.csv_data = undefined
 
   this.loadFile = function (file_url) {
     return new Promise(function(resolve, reject){
-      fetch(file_url).then((response) => {
+      $.get(file_url).then((response) => {
         _this.csv_data = Papa.parse(response)
         resolve()
       });

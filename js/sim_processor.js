@@ -13,21 +13,18 @@ function SimProcessor(parentDiv, plot) {
   }
 
   var processResults = function(results){
-    console.log(results)
     var data = results.data
-    var y = data.y
-    var sampleRate = data.sampleRate
+    var v = data.v
     var heartRate = data.heartRate
     var x = []
-    for (let i = 0; i < y.length; y++){
-      x.push(sampleRate*i)
+    for (let i = 0; i < v.length; i++){
+      v.push(i)
     }
     var processedResults = {
-      'y': y,
-      'x': x,
+      'v': v,
       'heartRate': heartRate
     }
-    parentDiv.querySelector('#heart_rate').innerText += heartRate
+    parentDiv.querySelector('#heart_rate').innerText = "Heart rate: " + heartRate
     plot.addDataSeriesToChart(y, x, 'Sim Results')
   }
 }

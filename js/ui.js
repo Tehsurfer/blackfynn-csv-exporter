@@ -90,31 +90,47 @@ function UI (parentDiv) {
     }
   }
 
+  var simGui = {
+    'Stimulation level': 50,
+    'Stellate stimulation': true,
+    'Vagal stimulation': false,
+    'Run Simulation': () => simRun()
+  }
+
+   var setChecked = function( prop ) {
+    for (let param in simGui){
+      simGui[param] = false;
+    }
+    simGui[prop] = true;
+  }
+
   this.createSimDatGui = function(exportObj){
     if ( gui === undefined){
       _this.buildDatGui(exportObj)
     }
     _this.hideSelector()
     _this.showDatGui()
-    gui.add(simGui, 'Slider', 0, 50)
-    gui.add(simGui, 'Parameter A')
-    gui.add(simGui, 'Parameter B')
-    gui.add(simGui, 'Parameter C')
+    gui.add(simGui, 'Stimulation level', 0, 100)
+    gui.add(simGui, 'Stellate stimulation').listen().onChange(() => {setChecked('Stellate stimulation')});
+    gui.add(simGui, 'Vagal stimulation').listen().onChange(function(){setChecked('Vagal stimulation')});
     gui.add(simGui, 'Run Simulation')
   }
 
-  var simGui = {
-    Slider: 50,
-    'Parameter A': false,
-    'Parameter B': false,
-    'Parameter C': false,
-    'Run Simulation': () => simRun()
-  }
+  var simRun = function() {
+    let study_id = '194bb264-a717-11e9-9dff-02420aff2767'
+//    let heartDiv = document.createElement('Div')
+//    parentDiv.querySelector("#heart_rate").style.visibility = 'visible'
 
-  var simRun = function(){
-    heartDiv = document.createElement('Div')
-    parentDiv.querySelector("#heart-rate").style.visibility = 'visible'
-    console.log('running simulation with parameters', simGui.Slider, simGui['Parameter A'], simGui['Parameter B'])
+    let stimulation_mode = 1
+    if (simGui['Stellate stimulation']) {
+      stimulation_mode = 1
+    } else if (simGui['Vagal stimulation']) {
+      stimulation_mode = 2
+    }
+    let stimulation_level = simGui['Stimulation level'] / 100.0
+
+    url = 'https://osparc.io/study/' + study_id + '?stimulation_mode=' + stimulation_mode + '&stimulation_level=' + stimulation_level
+    window.open(url);
   }
 
   this.createDatGuiDropdown = function (channels, onchangeFunc) {

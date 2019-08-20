@@ -13,21 +13,19 @@ function SimProcessor(parentDiv, plot) {
     _this.bc.onmessage =  this.processResults
   }
 
-  this.processResults = (results) => {
-    console.log(results, 'hehehe')
+  var processResults = function(results){
     var data = results.data
-    var y = data.v
+    var v = data.v
     var heartRate = data.heartRate
     var x = []
-    for (let i = 0; i < y.length; i++){
+    for (let i = 0; i < v.length; i++){
       x.push(i)
     }
     var processedResults = {
-      'y': y,
-      'x': x,
+      'v': v,
       'heartRate': heartRate
     }
-    parentDiv.querySelector('#heart_rate').innerText =  'Heart Rate: ' + heartRate 
+    parentDiv.querySelector('#heart_rate').innerText = 'Heart rate: ' + heartRate
     parentDiv.querySelector('#heart_rate').style.visibility = 'visible'
     plot.addDataSeriesToChart(y, x, 'Sim Results')
   }

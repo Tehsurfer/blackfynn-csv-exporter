@@ -117,10 +117,6 @@ function BlackfynnManager(targetDiv) {
     'Hide All': () => _this.hideAll()
   }
 
-
-
-
-
   var openCSVfromState = function(url){
     return new Promise(function(resolve, reject){
       if (url === undefined){
@@ -283,13 +279,11 @@ function BlackfynnManager(targetDiv) {
     plot.addDataSeriesToChart(ydata, xaxis, 'results')
   }
 
-  this.initialiseForSim = function(){
+  this.initialiseForSim = function() {
     ui.createSimDatGui(exportObject)
   }
 
-
   var initialiseObject = function(){
-
   }
 
   this.updateSize = function(){

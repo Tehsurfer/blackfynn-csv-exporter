@@ -7,4 +7,5 @@ nerves/*
 .tern-project
 node_modules
 build
+.idea/
 
